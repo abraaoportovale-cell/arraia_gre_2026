@@ -347,9 +347,9 @@ async function signInWithGoogle(){
 }
 
 async function signOut(){
-  if(confirm('Deseja sair da sua conta?')){
-    await db.auth.signOut();
-  }
+  showLoading(true);
+  await db.auth.signOut();
+  showLoading(false);
 }
 
 /* ── CARREGAR TODOS OS VOTOS (para chips e painel) */
