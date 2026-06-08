@@ -6,7 +6,7 @@
 <title>Arraiá do GRE 2026 — Vote no seu pratinho!</title>
 <link href="https://fonts.googleapis.com/css2?family=Passion+One:wght@400;700;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-  :root {--yellow:#F5B800;--orange:#E8580C;--red:#C0392B;--brown:#5C3317;--chalk:#2B2B2B;--cream:#FFF8E7;--green:#2E7D32;--wood:#8B5E3C;}
+  :root {--yellow:#F5B800;--orange:#E8580C;--brown:#5C3317;--chalk:#2B2B2B;--cream:#FFF8E7;--wood:#8B5E3C;}
   *{box-sizing:border-box;margin:0;padding:0}
   body{background:var(--chalk);min-height:100vh;font-family:'Nunito',sans-serif;color:var(--cream);overflow-x:hidden}
   .bunting{position:fixed;top:0;left:0;right:0;height:80px;z-index:100;pointer-events:none;overflow:hidden}
@@ -26,6 +26,13 @@
   .date-badge{display:inline-block;background:var(--wood);border:3px solid var(--yellow);border-radius:6px;padding:8px 24px;margin:12px auto 0;font-family:'Passion One',sans-serif;font-size:1.4rem;letter-spacing:.12em;color:var(--yellow);text-shadow:2px 2px 0 rgba(0,0,0,.5);box-shadow:0 4px 0 rgba(0,0,0,.4)}
   .intro-box{background:rgba(255,248,231,.07);border:1px solid rgba(245,184,0,.25);border-radius:12px;padding:18px 22px;margin:20px 0 24px;font-size:.95rem;line-height:1.6;color:#fef9ef;text-align:center}
   .intro-box strong{color:var(--yellow)}
+  /* TABS */
+  .tabs{display:flex;gap:4px;margin-bottom:20px;background:rgba(0,0,0,.3);border-radius:12px;padding:5px}
+  .tab-btn{flex:1;padding:11px;border:none;border-radius:9px;font-family:'Passion One',sans-serif;font-size:1rem;letter-spacing:.06em;cursor:pointer;transition:all .2s;background:transparent;color:rgba(255,255,255,.5)}
+  .tab-btn.active{background:var(--yellow);color:var(--brown);box-shadow:0 3px 0 #b88500}
+  .tab-panel{display:none}
+  .tab-panel.active{display:block}
+  /* LOGIN / USER */
   #login-screen{text-align:center;padding:32px 20px 40px;background:rgba(0,0,0,.3);border-radius:16px;border:1px solid rgba(245,184,0,.15)}
   #login-screen p{color:#ffd97a;font-size:1rem;margin-bottom:8px}
   #login-screen small{display:block;color:rgba(255,255,255,.3);font-size:.75rem;margin-top:12px}
@@ -36,7 +43,9 @@
   #user-bar img{width:38px;height:38px;border-radius:50%;border:2px solid var(--yellow);object-fit:cover}
   #user-bar .uname{font-weight:700;color:var(--yellow);flex:1;font-size:.95rem}
   #user-bar .uemail{color:rgba(255,255,255,.4);font-size:.75rem;display:block}
-  .logout-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:#ccc;font-family:'Nunito',sans-serif;font-size:.8rem;padding:5px 14px;border-radius:20px;cursor:pointer}
+  .logout-btn{background:rgba(255,60,60,.15);border:1px solid rgba(255,60,60,.3);color:#ff8080;font-family:'Nunito',sans-serif;font-size:.85rem;font-weight:700;padding:7px 16px;border-radius:20px;cursor:pointer;transition:background .15s}
+  .logout-btn:hover{background:rgba(255,60,60,.28)}
+  /* FORM */
   form{display:flex;flex-direction:column;gap:22px}
   .section{background:rgba(0,0,0,.35);border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.06)}
   .section-header{display:flex;align-items:center;gap:10px;padding:13px 20px;font-family:'Passion One',sans-serif;font-size:1.2rem;letter-spacing:.08em;text-transform:uppercase}
@@ -45,7 +54,6 @@
   .sec-milho .section-header{background:linear-gradient(135deg,#5C4300,#D4AC0D);color:#1a1a1a}
   .sec-caldos .section-header{background:linear-gradient(135deg,#1A3A00,#2E7D32)}
   .sec-petiscos .section-header{background:linear-gradient(135deg,#3E1F00,#8B5E3C)}
-  .sec-bebidas .section-header{background:linear-gradient(135deg,#003060,#1565C0)}
   .sec-outros .section-header{background:linear-gradient(135deg,#2C2C2C,#555)}
   .items-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:2px;padding:10px}
   .item-label{display:flex;flex-direction:column;gap:5px;padding:10px 13px;border-radius:8px;cursor:pointer;transition:background .15s,transform .1s;user-select:none;background:rgba(255,255,255,.04)}
@@ -60,18 +68,58 @@
   .item-text{font-size:.87rem;font-weight:700;line-height:1.3;flex:1}
   .voters-list{display:flex;flex-wrap:wrap;gap:4px;padding-left:29px}
   .voter-chip{font-size:.68rem;background:rgba(245,184,0,.18);border:1px solid rgba(245,184,0,.3);color:#ffd97a;padding:2px 8px;border-radius:10px;white-space:nowrap;font-weight:700}
+  /* CAMPO OUTRO LIVRE */
+  .outro-wrap{padding:10px 13px 14px;border-top:1px solid rgba(255,255,255,.06)}
+  .outro-label{font-size:.78rem;color:rgba(255,255,255,.4);margin-bottom:6px;font-weight:700;text-transform:uppercase;letter-spacing:.08em}
+  .outro-row{display:flex;gap:8px}
+  .outro-input{flex:1;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:8px 12px;color:var(--cream);font-family:'Nunito',sans-serif;font-size:.87rem;outline:none;transition:border .15s}
+  .outro-input:focus{border-color:var(--yellow)}
+  .outro-input::placeholder{color:rgba(255,255,255,.25)}
+  .outro-add-btn{background:var(--yellow);color:var(--brown);border:none;border-radius:8px;padding:8px 14px;font-family:'Passion One',sans-serif;font-size:.9rem;cursor:pointer;white-space:nowrap;transition:opacity .15s}
+  .outro-add-btn:hover{opacity:.85}
+  .outro-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+  .outro-tag{display:flex;align-items:center;gap:6px;background:rgba(245,184,0,.15);border:1px solid rgba(245,184,0,.35);color:#ffd97a;padding:4px 10px;border-radius:10px;font-size:.78rem;font-weight:700}
+  .outro-tag button{background:none;border:none;color:rgba(255,100,100,.7);cursor:pointer;font-size:.85rem;line-height:1;padding:0}
+  .outro-tag button:hover{color:#ff5555}
+  /* SUBMIT / SUCCESS */
   .submit-wrap{text-align:center;padding-top:4px}
   .btn-submit{display:inline-flex;align-items:center;gap:10px;background:var(--yellow);color:var(--brown);font-family:'Passion One',sans-serif;font-size:1.35rem;letter-spacing:.1em;padding:15px 46px;border:none;border-radius:40px;cursor:pointer;box-shadow:0 6px 0 #b88500;transition:transform .1s,box-shadow .1s;text-transform:uppercase}
   .btn-submit:hover{transform:translateY(-2px);box-shadow:0 8px 0 #b88500}
   .btn-submit:active{transform:translateY(2px);box-shadow:0 2px 0 #b88500}
   .btn-submit:disabled{opacity:.5;cursor:not-allowed;transform:none}
-  #success-msg{display:none;text-align:center;padding:40px 20px;background:rgba(46,125,50,.15);border:2px solid rgba(46,125,50,.4);border-radius:16px}
+  #success-msg{display:none;text-align:center;padding:32px 20px;background:rgba(46,125,50,.15);border:2px solid rgba(46,125,50,.4);border-radius:16px}
   @keyframes popIn{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:scale(1)}}
   #success-msg.show{display:block;animation:popIn .4s cubic-bezier(.34,1.56,.64,1)}
-  #success-msg .emoji-big{font-size:4rem;display:block;margin-bottom:10px}
+  #success-msg .emoji-big{font-size:3.5rem;display:block;margin-bottom:8px}
   #success-msg h2{font-family:'Passion One',sans-serif;font-size:2rem;color:var(--yellow);margin-bottom:8px}
-  #success-msg p{color:#ccc;font-size:.92rem;line-height:1.5}
-  .btn-edit{display:inline-block;margin-top:18px;background:rgba(245,184,0,.12);border:1px solid var(--yellow);color:var(--yellow);font-family:'Passion One',sans-serif;font-size:1rem;padding:10px 28px;border-radius:30px;cursor:pointer;letter-spacing:.08em}
+  #success-msg p{color:#ccc;font-size:.92rem;line-height:1.6;margin-bottom:16px}
+  .btn-edit{display:inline-block;background:rgba(245,184,0,.12);border:1px solid var(--yellow);color:var(--yellow);font-family:'Passion One',sans-serif;font-size:1rem;padding:10px 28px;border-radius:30px;cursor:pointer;letter-spacing:.08em;transition:background .15s}
+  .btn-edit:hover{background:rgba(245,184,0,.22)}
+  /* PAINEL */
+  .painel-stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px}
+  .stat-card{background:rgba(0,0,0,.4);border:1px solid rgba(245,184,0,.2);border-radius:12px;padding:16px;text-align:center}
+  .stat-card .stat-num{font-family:'Passion One',sans-serif;font-size:2.8rem;color:var(--yellow);line-height:1}
+  .stat-card .stat-label{font-size:.8rem;color:#ffd97a;margin-top:4px;text-transform:uppercase;letter-spacing:.1em}
+  .painel-section{background:rgba(0,0,0,.3);border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.06);margin-bottom:16px}
+  .painel-section-header{padding:12px 18px;font-family:'Passion One',sans-serif;font-size:1.1rem;letter-spacing:.08em;text-transform:uppercase;display:flex;align-items:center;gap:8px}
+  .ps-doces{background:linear-gradient(135deg,#7B3F00,#C0392B)}
+  .ps-salgados{background:linear-gradient(135deg,#4A1942,#8B3E7C)}
+  .ps-milho{background:linear-gradient(135deg,#5C4300,#D4AC0D);color:#1a1a1a}
+  .ps-caldos{background:linear-gradient(135deg,#1A3A00,#2E7D32)}
+  .ps-petiscos{background:linear-gradient(135deg,#3E1F00,#8B5E3C)}
+  .ps-outros{background:linear-gradient(135deg,#2C2C2C,#555)}
+  .painel-item{display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid rgba(255,255,255,.04)}
+  .painel-item:last-child{border-bottom:none}
+  .painel-item-name{flex:1;font-size:.88rem;font-weight:700}
+  .painel-item-voters{display:flex;flex-wrap:wrap;gap:4px;flex:2}
+  .painel-voter{font-size:.72rem;background:rgba(245,184,0,.15);border:1px solid rgba(245,184,0,.3);color:#ffd97a;padding:3px 10px;border-radius:10px;font-weight:700}
+  .painel-empty{font-size:.78rem;color:rgba(255,255,255,.2);font-style:italic}
+  .painel-count{font-family:'Passion One',sans-serif;font-size:1.3rem;color:var(--yellow);min-width:28px;text-align:right}
+  .bar-wrap{width:60px;height:8px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden}
+  .bar-fill{height:100%;background:var(--yellow);border-radius:4px;transition:width .4s}
+  .empty-tag{font-size:.68rem;background:rgba(231,76,60,.15);border:1px solid rgba(231,76,60,.3);color:#e74c3c;padding:2px 7px;border-radius:8px;font-weight:700;margin-left:4px}
+  .livre-tag{font-size:.68rem;background:rgba(155,89,182,.2);border:1px solid rgba(155,89,182,.4);color:#c39bd3;padding:2px 7px;border-radius:8px;font-weight:700;margin-left:4px}
+  /* COUNTER BAR */
   .counter-bar{position:fixed;bottom:0;left:0;right:0;background:var(--brown);border-top:3px solid var(--yellow);padding:10px 20px;display:flex;justify-content:center;gap:20px;align-items:center;font-size:.85rem;z-index:50}
   .counter-bar span{color:#ffd97a}
   .counter-bar strong{color:var(--yellow);font-size:1.1rem;font-family:'Passion One',sans-serif}
@@ -79,7 +127,6 @@
 </style>
 </head>
 <body>
-
 <div class="bunting">
   <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M0,20 Q180,40 360,20 Q540,0 720,20 Q900,40 1080,20 Q1260,0 1440,20" stroke="#ffe47a" stroke-width="1.5" fill="none" opacity=".7"/>
@@ -122,75 +169,101 @@
     Você verá em tempo real quem já escolheu cada prato — assim a gente garante variedade! 🎉
   </div>
 
-  <div id="login-screen">
-    <p>Entre com sua conta Google para participar:</p>
-    <button class="google-btn" onclick="signInWithGoogle()">
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
-        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-      </svg>
-      Entrar com Google
-    </button>
-    <small>Apenas membros do GRE da Porto Vale</small>
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('votar')">🌽 Votar</button>
+    <button class="tab-btn" onclick="switchTab('painel')">📊 Painel Geral</button>
   </div>
 
-  <div id="user-bar">
-    <img id="user-avatar" src="" alt="Foto">
-    <div style="flex:1">
-      <span class="uname" id="user-name-bar"></span>
-      <span class="uemail" id="user-email-bar"></span>
+  <!-- ABA VOTAR -->
+  <div class="tab-panel active" id="tab-votar">
+
+    <div id="login-screen">
+      <p>Entre com sua conta Google para participar:</p>
+      <button class="google-btn" onclick="signInWithGoogle()">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+          <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+          <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+          <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+        </svg>
+        Entrar com Google
+      </button>
+      <small>Apenas membros do GRE da Porto Vale</small>
     </div>
-    <button class="logout-btn" onclick="signOut()">Sair</button>
+
+    <div id="user-bar">
+      <img id="user-avatar" src="" alt="Foto">
+      <div style="flex:1">
+        <span class="uname" id="user-name-bar"></span>
+        <span class="uemail" id="user-email-bar"></span>
+      </div>
+      <button class="logout-btn" onclick="signOut()">🚪 Sair</button>
+    </div>
+
+    <form id="voteForm" style="display:none" onsubmit="handleSubmit(event)">
+      <div class="section sec-doces">
+        <div class="section-header"><span>🍰</span> Doces</div>
+        <div class="items-grid" id="grid-doces"></div>
+        <div class="outro-wrap" id="outro-doces"></div>
+      </div>
+      <div class="section sec-salgados">
+        <div class="section-header"><span>🌭</span> Salgados</div>
+        <div class="items-grid" id="grid-salgados"></div>
+        <div class="outro-wrap" id="outro-salgados"></div>
+      </div>
+      <div class="section sec-milho">
+        <div class="section-header"><span>🌽</span> Típicos de Milho</div>
+        <div class="items-grid" id="grid-milho"></div>
+        <div class="outro-wrap" id="outro-milho"></div>
+      </div>
+      <div class="section sec-caldos">
+        <div class="section-header"><span>🍲</span> Caldos</div>
+        <div class="items-grid" id="grid-caldos"></div>
+        <div class="outro-wrap" id="outro-caldos"></div>
+      </div>
+      <div class="section sec-petiscos">
+        <div class="section-header"><span>🥜</span> Petiscos</div>
+        <div class="items-grid" id="grid-petiscos"></div>
+        <div class="outro-wrap" id="outro-petiscos"></div>
+      </div>
+      <div class="section sec-outros">
+        <div class="section-header"><span>🎁</span> Outros</div>
+        <div class="outro-wrap" id="outro-outros" style="border-top:none"></div>
+      </div>
+      <div class="submit-wrap">
+        <button type="submit" class="btn-submit" id="submit-btn">🎊 Confirmar meu pratinho!</button>
+      </div>
+    </form>
+
+    <div id="success-msg">
+      <span class="emoji-big">🎉</span>
+      <h2>CONFIRMADO, SIMBORA!</h2>
+      <p id="success-detail"></p>
+      <button class="btn-edit" onclick="editChoices()">✏️ Editar minha escolha</button>
+    </div>
+
   </div>
 
-  <form id="voteForm" style="display:none" onsubmit="handleSubmit(event)">
-    <div class="section sec-doces">
-      <div class="section-header"><span>🍰</span> Doces</div>
-      <div class="items-grid" id="grid-doces"></div>
+  <!-- ABA PAINEL -->
+  <div class="tab-panel" id="tab-painel">
+    <div class="painel-stats">
+      <div class="stat-card">
+        <div class="stat-num" id="stat-participantes">—</div>
+        <div class="stat-label">👥 Participantes</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="stat-itens">—</div>
+        <div class="stat-label">🍽️ Itens cobertos</div>
+      </div>
     </div>
-    <div class="section sec-salgados">
-      <div class="section-header"><span>🌭</span> Salgados</div>
-      <div class="items-grid" id="grid-salgados"></div>
-    </div>
-    <div class="section sec-milho">
-      <div class="section-header"><span>🌽</span> Típicos de Milho</div>
-      <div class="items-grid" id="grid-milho"></div>
-    </div>
-    <div class="section sec-caldos">
-      <div class="section-header"><span>🍲</span> Caldos</div>
-      <div class="items-grid" id="grid-caldos"></div>
-    </div>
-    <div class="section sec-petiscos">
-      <div class="section-header"><span>🥜</span> Petiscos</div>
-      <div class="items-grid" id="grid-petiscos"></div>
-    </div>
-    <div class="section sec-bebidas">
-      <div class="section-header"><span>🥤</span> Bebidas</div>
-      <div class="items-grid" id="grid-bebidas"></div>
-    </div>
-    <div class="section sec-outros">
-      <div class="section-header"><span>🎁</span> Outros</div>
-      <div class="items-grid" id="grid-outros"></div>
-    </div>
-    <div class="submit-wrap">
-      <button type="submit" class="btn-submit" id="submit-btn">🎊 Confirmar meu pratinho!</button>
-    </div>
-  </form>
-
-  <div id="success-msg">
-    <span class="emoji-big">🎉</span>
-    <h2>CONFIRMADO, SIMBORA!</h2>
-    <p id="success-detail"></p>
-    <button class="btn-edit" onclick="editChoices()">✏️ Editar minha escolha</button>
+    <div id="painel-content"><div style="text-align:center;padding:40px;color:rgba(255,255,255,.3)">Carregando... 🌽</div></div>
   </div>
 
   <div style="height:80px"></div>
 </div>
 
 <div class="counter-bar">
-  <span>✅ Itens selecionados: <strong id="count">0</strong></span>
+  <span>✅ Selecionados: <strong id="count">0</strong></span>
   <span>🎪 Arraiá do GRE 2026</span>
 </div>
 
@@ -198,191 +271,355 @@
 <script>
 const SUPABASE_URL = 'https://lklxavtsmqdwjnrgrzjz.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_CF1-xwEuS0OyqbkxhJERkQ_UlyBCuBz';
-
-// CORREÇÃO: era "supabase", conflitava com o SDK — renomeado para "db"
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const SECTIONS = {
-  doces:    ['Bolo de milho','Bolo de fubá','Bolo de fubá com goiabada','Bolo de mandioca (aipim)','Bolo de paçoca','Arroz doce','Canjica','Curau','Doce de abóbora','Pé-de-moleque','Paçoca','Cocada','Maçã do amor','Queijadinha','Nhá Benta'],
-  salgados: ['Cachorro-quente','Carne louca','Bolinho caipira','Empadão','Torta salgada','Esfiha','Pastel assado','Pão com linguiça','Mini sanduíches','Calabresa acebolada'],
-  milho:    ['Milho cozido','Pamonha','Cuscuz'],
-  caldos:   ['Caldo verde','Caldo de mandioca','Caldo de feijão','Caldo de milho','Caldo de abóbora'],
-  petiscos: ['Amendoim doce','Amendoim salgado','Pé-de-moleque','Paçoca','Pipoca doce','Pipoca salgada'],
-  bebidas:  ['Refrigerante','Coca-Cola Zero','Suco','Chá gelado','Água','Quentão sem álcool','Chocolate quente'],
-  outros:   ['Talheres descartáveis','Pratos descartáveis','Copos descartáveis','Guardanapos','Gelo']
+  doces:    {icon:'🍰', label:'Doces',           items:['Bolo de milho','Bolo de fubá','Bolo de fubá com goiabada','Bolo de mandioca (aipim)','Bolo de paçoca','Arroz doce','Canjica','Curau','Doce de abóbora','Pé-de-moleque','Paçoca','Cocada','Maçã do amor','Queijadinha','Nhá Benta']},
+  salgados: {icon:'🌭', label:'Salgados',        items:['Cachorro-quente','Carne louca','Bolinho caipira','Empadão','Torta salgada','Esfiha','Pastel assado','Pão com linguiça','Mini sanduíches','Calabresa acebolada']},
+  milho:    {icon:'🌽', label:'Típicos de Milho', items:['Milho cozido','Pamonha','Cuscuz']},
+  caldos:   {icon:'🍲', label:'Caldos',           items:['Caldo verde','Caldo de mandioca','Caldo de feijão','Caldo de milho','Caldo de abóbora']},
+  petiscos: {icon:'🥜', label:'Petiscos',         items:['Amendoim doce','Amendoim salgado','Pé-de-moleque','Paçoca','Pipoca doce','Pipoca salgada']},
+  outros:   {icon:'🎁', label:'Outros',            items:[]}   // sem itens fixos — só campo livre
 };
 
-let currentUser = null;
-let votesData   = {};
-let myVotes     = new Set();
-let rendered    = false;
-let realtimeCh  = null;
+let currentUser  = null;
+let votesData    = {};  // { item: [{uid,name}] }
+let myVotes      = new Set();   // itens fixos marcados
+let extrasLivres = { doces:[], salgados:[], milho:[], caldos:[], petiscos:[], outros:[] };
+let rendered     = false;
+let realtimeCh   = null;
 
-function showLoading(v) {
-  document.getElementById('loading-overlay').classList.toggle('visible', v);
+/* ── UTILS ─────────────────────────────────────── */
+function showLoading(v){ document.getElementById('loading-overlay').classList.toggle('visible',v); }
+
+function updateCount(){
+  const fixed  = document.querySelectorAll('input[name="items"]:checked').length;
+  const extras = Object.values(extrasLivres).reduce((s,a)=>s+a.length,0);
+  document.getElementById('count').textContent = fixed + extras;
 }
 
-db.auth.onAuthStateChange(async (event, session) => {
+/* ── TABS ──────────────────────────────────────── */
+function switchTab(tab){
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>{
+    b.classList.toggle('active',(i===0&&tab==='votar')||(i===1&&tab==='painel'));
+  });
+  document.getElementById('tab-votar').classList.toggle('active',tab==='votar');
+  document.getElementById('tab-painel').classList.toggle('active',tab==='painel');
+  if(tab==='painel') renderPainel();
+}
+
+/* ── AUTH ──────────────────────────────────────── */
+db.auth.onAuthStateChange(async(event,session)=>{
   showLoading(false);
-  if (session?.user) {
+  if(session?.user){
     currentUser = session.user;
-    const meta = session.user.user_metadata;
+    const meta  = session.user.user_metadata;
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('user-bar').style.display     = 'flex';
-    document.getElementById('user-avatar').src            = meta.avatar_url || meta.picture || '';
-    document.getElementById('user-name-bar').textContent  = meta.full_name || meta.name || session.user.email;
+    document.getElementById('user-avatar').src            = meta.avatar_url||meta.picture||'';
+    document.getElementById('user-name-bar').textContent  = meta.full_name||meta.name||session.user.email;
     document.getElementById('user-email-bar').textContent = session.user.email;
-    if (!rendered) { renderAllSections(); rendered = true; }
+
+    if(!rendered){ renderAllSections(); rendered=true; }
+
     await loadAllVotes();
-    await loadMyVotes();
+    await loadMyVotes();   // carrega votos anteriores e mostra formulário preenchido
     subscribeRealtime();
-    document.getElementById('voteForm').style.display = 'flex';
+
   } else {
     currentUser = null;
     document.getElementById('login-screen').style.display = 'block';
     document.getElementById('user-bar').style.display     = 'none';
     document.getElementById('voteForm').style.display     = 'none';
     document.getElementById('success-msg').classList.remove('show');
-    if (realtimeCh) { db.removeChannel(realtimeCh); realtimeCh = null; }
+    if(realtimeCh){ db.removeChannel(realtimeCh); realtimeCh=null; }
+    updateCount();
   }
 });
 
-async function signInWithGoogle() {
+async function signInWithGoogle(){
   showLoading(true);
-  const { error } = await db.auth.signInWithOAuth({
-    provider: 'google',
-    options: { redirectTo: window.location.href }
+  const {error} = await db.auth.signInWithOAuth({
+    provider:'google',
+    options:{redirectTo:window.location.href}
   });
-  if (error) { showLoading(false); alert('Erro ao entrar: ' + error.message); }
+  if(error){ showLoading(false); alert('Erro ao entrar: '+error.message); }
 }
 
-async function signOut() {
-  if (confirm('Deseja sair da sua conta?')) await db.auth.signOut();
+async function signOut(){
+  if(confirm('Deseja sair da sua conta?')){
+    await db.auth.signOut();
+  }
 }
 
-async function loadAllVotes() {
-  const { data, error } = await db.from('votes2026').select('uid, name, item');
-  if (error) { console.error(error); return; }
+/* ── CARREGAR TODOS OS VOTOS (para chips e painel) */
+async function loadAllVotes(){
+  const {data,error} = await db.from('votes2026').select('uid,name,item');
+  if(error){ console.error(error); return; }
   votesData = {};
-  data.forEach(r => {
-    if (!votesData[r.item]) votesData[r.item] = [];
-    votesData[r.item].push({ uid: r.uid, name: r.name });
+  data.forEach(r=>{
+    if(!votesData[r.item]) votesData[r.item]=[];
+    votesData[r.item].push({uid:r.uid,name:r.name});
   });
   refreshAllVoterChips();
+  if(document.getElementById('tab-painel').classList.contains('active')) renderPainel();
 }
 
-async function loadMyVotes() {
-  if (!currentUser) return;
-  const { data } = await db.from('votes2026').select('item').eq('uid', currentUser.id);
-  myVotes = new Set((data || []).map(r => r.item));
-  document.querySelectorAll('input[name="items"]').forEach(cb => {
+/* ── CARREGAR MEUS VOTOS E MOSTRAR FORMULÁRIO ─── */
+async function loadMyVotes(){
+  if(!currentUser) return;
+  const {data} = await db.from('votes2026').select('item').eq('uid',currentUser.id);
+  const allMyItems = (data||[]).map(r=>r.item);
+
+  const allFixed = Object.values(SECTIONS).flatMap(s=>s.items);
+  myVotes = new Set();
+  const myExtras = {doces:[],salgados:[],milho:[],caldos:[],petiscos:[],outros:[]};
+
+  allMyItems.forEach(item=>{
+    if(allFixed.includes(item)){
+      myVotes.add(item);
+    } else if(item.startsWith('EXTRA:')){
+      const parts = item.split(':');
+      const sec   = parts[1];
+      const name  = parts.slice(2).join(':');
+      if(myExtras[sec]) myExtras[sec].push(name);
+    }
+  });
+
+  extrasLivres = myExtras;
+
+  // Marca checkboxes
+  document.querySelectorAll('input[name="items"]').forEach(cb=>{
     cb.checked = myVotes.has(cb.value);
   });
+
+  // Renderiza tags extras
+  Object.keys(SECTIONS).forEach(k=> renderExtrasTags(k));
+
   updateCount();
+
+  // SEMPRE mostra o formulário (editável), nunca trava na tela de sucesso após relogin
+  document.getElementById('success-msg').classList.remove('show');
+  document.getElementById('voteForm').style.display = 'flex';
 }
 
-function subscribeRealtime() {
-  if (realtimeCh) db.removeChannel(realtimeCh);
-  realtimeCh = db.channel('votes2026-changes')
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'votes2026' }, () => {
+/* ── REALTIME ──────────────────────────────────── */
+function subscribeRealtime(){
+  if(realtimeCh) db.removeChannel(realtimeCh);
+  realtimeCh = db.channel('votes2026-ch')
+    .on('postgres_changes',{event:'*',schema:'public',table:'votes2026'},()=>{
       loadAllVotes();
     })
     .subscribe();
 }
 
-async function saveVotes(items) {
-  if (!currentUser) return;
+/* ── SALVAR ────────────────────────────────────── */
+async function saveVotes(items){
+  if(!currentUser) return;
   showLoading(true);
-  try {
-    await db.from('votes2026').delete().eq('uid', currentUser.id);
-    if (items.length > 0) {
+  try{
+    await db.from('votes2026').delete().eq('uid',currentUser.id);
+    if(items.length>0){
       const meta = currentUser.user_metadata;
-      const rows = items.map(item => ({
+      const rows = items.map(item=>({
         uid:       currentUser.id,
-        name:      meta.full_name || meta.name || currentUser.email,
+        name:      meta.full_name||meta.name||currentUser.email,
         email:     currentUser.email,
-        photo_url: meta.avatar_url || meta.picture || '',
+        photo_url: meta.avatar_url||meta.picture||'',
         item
       }));
-      const { error } = await db.from('votes2026').insert(rows);
-      if (error) throw error;
+      const {error} = await db.from('votes2026').insert(rows);
+      if(error) throw error;
     }
-    myVotes = new Set(items);
   } finally {
     showLoading(false);
   }
 }
 
-function renderAllSections() {
-  Object.entries(SECTIONS).forEach(([k, items]) => {
-    const grid = document.getElementById('grid-' + k);
-    if (!grid || grid.children.length) return;
-    items.forEach((item, i) => {
-      const id = `item-${k}-${i}`;
-      const label = document.createElement('label');
-      label.className = 'item-label';
-      label.htmlFor   = id;
-      label.innerHTML = `
-        <input type="checkbox" id="${id}" name="items" value="${item}" onchange="updateCount()">
-        <div class="item-top">
-          <div class="checkmark">
-            <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
-              <path d="M1 5L4.5 8.5L11 1" stroke="#5C3317" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+/* ── RENDER SEÇÕES ─────────────────────────────── */
+function renderAllSections(){
+  Object.entries(SECTIONS).forEach(([k,sec])=>{
+    const grid = document.getElementById('grid-'+k);
+    // itens fixos
+    if(grid){
+      sec.items.forEach((item,i)=>{
+        const id = `item-${k}-${i}`;
+        const label = document.createElement('label');
+        label.className = 'item-label';
+        label.htmlFor   = id;
+        label.innerHTML = `
+          <input type="checkbox" id="${id}" name="items" value="${item}" onchange="updateCount()">
+          <div class="item-top">
+            <div class="checkmark">
+              <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+                <path d="M1 5L4.5 8.5L11 1" stroke="#5C3317" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <span class="item-text">${item}</span>
           </div>
-          <span class="item-text">${item}</span>
-        </div>
-        <div class="voters-list" id="voters-${id}"></div>
-      `;
-      grid.appendChild(label);
-    });
+          <div class="voters-list" id="voters-${id}"></div>
+        `;
+        grid.appendChild(label);
+      });
+    }
+    // campo livre
+    renderOutroInput(k);
   });
 }
 
-function refreshAllVoterChips() {
-  document.querySelectorAll('input[name="items"]').forEach(cb => {
-    const div = document.getElementById('voters-' + cb.id);
-    if (!div) return;
-    const others = (votesData[cb.value] || []).filter(v => v.uid !== currentUser?.id);
+function renderOutroInput(secKey){
+  const wrap = document.getElementById('outro-'+secKey);
+  if(!wrap) return;
+  wrap.innerHTML = `
+    <div class="outro-label">✏️ Não está na lista? Escreva o que vai trazer:</div>
+    <div class="outro-row">
+      <input class="outro-input" id="outro-input-${secKey}" type="text" placeholder="Ex: Bolo de cenoura, Brigadeiro...">
+      <button type="button" class="outro-add-btn" onclick="addExtra('${secKey}')">+ Add</button>
+    </div>
+    <div class="outro-tags" id="outro-tags-${secKey}"></div>
+  `;
+  document.getElementById(`outro-input-${secKey}`).addEventListener('keydown',e=>{
+    if(e.key==='Enter'){ e.preventDefault(); addExtra(secKey); }
+  });
+}
+
+function addExtra(secKey){
+  const input = document.getElementById(`outro-input-${secKey}`);
+  const val   = input.value.trim();
+  if(!val) return;
+  if(!extrasLivres[secKey].includes(val)){
+    extrasLivres[secKey].push(val);
+    renderExtrasTags(secKey);
+    updateCount();
+  }
+  input.value='';
+}
+
+function removeExtra(secKey,item){
+  extrasLivres[secKey] = extrasLivres[secKey].filter(i=>i!==item);
+  renderExtrasTags(secKey);
+  updateCount();
+}
+
+function renderExtrasTags(secKey){
+  const container = document.getElementById(`outro-tags-${secKey}`);
+  if(!container) return;
+  container.innerHTML = extrasLivres[secKey].map(item=>`
+    <div class="outro-tag">
+      ${item}
+      <button type="button" onclick="removeExtra('${secKey}','${item.replace(/\\/g,'\\\\').replace(/'/g,"\\'")}')">✕</button>
+    </div>
+  `).join('');
+}
+
+function refreshAllVoterChips(){
+  document.querySelectorAll('input[name="items"]').forEach(cb=>{
+    const div = document.getElementById('voters-'+cb.id);
+    if(!div) return;
+    const others = (votesData[cb.value]||[]).filter(v=>v.uid!==currentUser?.id);
     div.innerHTML = others.length
-      ? others.map(v => `<span class="voter-chip">👤 ${v.name.split(' ')[0]}</span>`).join('')
+      ? others.map(v=>`<span class="voter-chip">👤 ${v.name.split(' ')[0]}</span>`).join('')
       : '';
   });
 }
 
-function updateCount() {
-  const n = document.querySelectorAll('input[name="items"]:checked').length;
-  document.getElementById('count').textContent = n;
-}
-
-async function handleSubmit(e) {
+/* ── SUBMIT ────────────────────────────────────── */
+async function handleSubmit(e){
   e.preventDefault();
-  if (!currentUser) { alert('Faça login primeiro!'); return; }
-  const checked = [...document.querySelectorAll('input[name="items"]:checked')].map(i => i.value);
-  if (checked.length === 0) { alert('Selecione pelo menos um item!'); return; }
+  if(!currentUser){ alert('Faça login primeiro!'); return; }
+  const checked = [...document.querySelectorAll('input[name="items"]:checked')].map(i=>i.value);
+  const extraItems = [];
+  Object.entries(extrasLivres).forEach(([sec,items])=>{
+    items.forEach(item=> extraItems.push(`EXTRA:${sec}:${item}`));
+  });
+  const all = [...checked,...extraItems];
+  if(all.length===0){ alert('Selecione ou adicione pelo menos um item!'); return; }
+
   const btn = document.getElementById('submit-btn');
   btn.disabled = true;
-  try {
-    await saveVotes(checked);
-    document.getElementById('voteForm').style.display = 'none';
-    const msg = document.getElementById('success-msg');
-    msg.classList.add('show');
-    const meta = currentUser.user_metadata;
-    const nome = (meta.full_name || meta.name || 'Você').split(' ')[0];
+  try{
+    await saveVotes(all);
+    document.getElementById('voteForm').style.display='none';
+    document.getElementById('success-msg').classList.add('show');
+    const meta  = currentUser.user_metadata;
+    const nome  = (meta.full_name||meta.name||'Você').split(' ')[0];
+    const nomes = [...checked,...Object.values(extrasLivres).flat()];
     document.getElementById('success-detail').textContent =
-      `${nome}, seus ${checked.length} item(ns) foram registrados: ${checked.join(', ')}. Até o arraiá! 🌽🎵`;
-  } catch(err) {
-    alert('Erro ao salvar: ' + err.message);
-  } finally {
-    btn.disabled = false;
+      `${nome}, seus ${nomes.length} item(ns) estão registrados: ${nomes.join(', ')}. Até o arraiá! 🌽🎵`;
+    await loadAllVotes();
+  } catch(err){
+    alert('Erro ao salvar: '+err.message);
+  } finally{
+    btn.disabled=false;
   }
 }
 
-function editChoices() {
+function editChoices(){
   document.getElementById('success-msg').classList.remove('show');
-  document.getElementById('voteForm').style.display = 'flex';
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  document.getElementById('voteForm').style.display='flex';
+  window.scrollTo({top:0,behavior:'smooth'});
 }
+
+/* ── PAINEL ────────────────────────────────────── */
+function renderPainel(){
+  const uids = new Set();
+  Object.values(votesData).forEach(voters=>voters.forEach(v=>uids.add(v.uid)));
+  document.getElementById('stat-participantes').textContent = uids.size;
+  document.getElementById('stat-itens').textContent = Object.keys(votesData).filter(k=>votesData[k].length>0).length;
+
+  const maxCount = Math.max(1,...Object.values(votesData).map(v=>v.length));
+  const container= document.getElementById('painel-content');
+  let html = '';
+
+  Object.entries(SECTIONS).forEach(([k,sec])=>{
+    html += `<div class="painel-section">
+      <div class="painel-section-header ps-${k}">${sec.icon} ${sec.label}</div>`;
+
+    const fixedRows = sec.items.map(item=>({key:item,name:item,isExtra:false}));
+    const extraRows = Object.keys(votesData)
+      .filter(k2=>k2.startsWith(`EXTRA:${k}:`))
+      .map(k2=>({key:k2, name:k2.split(':').slice(2).join(':'), isExtra:true}));
+
+    const allRows = [...fixedRows,...extraRows].sort((a,b)=>{
+      return (votesData[b.key]||[]).length - (votesData[a.key]||[]).length;
+    });
+
+    if(allRows.length===0){
+      html+=`<div style="padding:16px;color:rgba(255,255,255,.3);font-size:.85rem;text-align:center">Nenhuma entrada ainda</div>`;
+    } else {
+      allRows.forEach(({key,name,isExtra})=>{
+        const voters = votesData[key]||[];
+        const count  = voters.length;
+        const pct    = Math.round((count/maxCount)*100);
+        const chips  = voters.map(v=>`<span class="painel-voter">👤 ${v.name.split(' ')[0]}</span>`).join('');
+        html+=`<div class="painel-item">
+          <div class="painel-item-name">${name}${isExtra?'<span class="livre-tag">livre</span>':''}${count===0?'<span class="empty-tag">vazio</span>':''}</div>
+          <div class="painel-item-voters">${count>0?chips:'<span class="painel-empty">Ninguém ainda</span>'}</div>
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+            <span class="painel-count">${count}</span>
+            <div class="bar-wrap"><div class="bar-fill" style="width:${pct}%"></div></div>
+          </div>
+        </div>`;
+      });
+    }
+    html+='</div>';
+  });
+
+  container.innerHTML = html;
+}
+
+/* ── PAINEL SEM LOGIN ──────────────────────────── */
+(async()=>{
+  const {data} = await db.from('votes2026').select('uid,name,item');
+  if(data){
+    votesData={};
+    data.forEach(r=>{
+      if(!votesData[r.item]) votesData[r.item]=[];
+      votesData[r.item].push({uid:r.uid,name:r.name});
+    });
+  }
+  renderPainel();
+})();
 </script>
 </body>
 </html>
