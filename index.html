@@ -278,7 +278,7 @@ const SECTIONS = {
   salgados: {icon:'🌭', label:'Salgados',        items:['Cachorro-quente','Carne louca','Bolinho caipira','Empadão','Torta salgada','Esfiha','Pastel assado','Pão com linguiça','Mini sanduíches','Calabresa acebolada']},
   milho:    {icon:'🌽', label:'Típicos de Milho', items:['Milho cozido','Pamonha','Cuscuz']},
   caldos:   {icon:'🍲', label:'Caldos',           items:['Caldo verde','Caldo de mandioca','Caldo de feijão','Caldo de milho','Caldo de abóbora']},
-  petiscos: {icon:'🥜', label:'Petiscos',         items:['Amendoim doce','Amendoim salgado','Pipoca doce','Pipoca salgada']},
+  petiscos: {icon:'🥜', label:'Petiscos',         items:['Amendoim doce','Amendoim salgado','Pé-de-moleque','Paçoca','Pipoca doce','Pipoca salgada']},
   outros:   {icon:'🎁', label:'Outros',            items:[]}   // sem itens fixos — só campo livre
 };
 
@@ -610,7 +610,7 @@ function renderPainel(){
   container.innerHTML = html;
 }
 
-/* ── PAINEL SEM LOGIN ──────────────────────────── */
+/* ── CARGA INICIAL E REALTIME DO PAINEL ────────── */
 (async()=>{
   const {data} = await db.from('votes2026').select('uid,name,item');
   if(data){
@@ -621,6 +621,22 @@ function renderPainel(){
     });
   }
   renderPainel();
+
+  // Realtime: atualiza painel automaticamente sem precisar clicar na aba
+  db.channel('votes2026-painel')
+    .on('postgres_changes',{event:'*',schema:'public',table:'votes2026'}, async()=>{
+      const {data:d} = await db.from('votes2026').select('uid,name,item');
+      if(d){
+        votesData={};
+        d.forEach(r=>{
+          if(!votesData[r.item]) votesData[r.item]=[];
+          votesData[r.item].push({uid:r.uid,name:r.name});
+        });
+      }
+      refreshAllVoterChips();
+      renderPainel();
+    })
+    .subscribe();
 })();
 </script>
 </body>
