@@ -271,7 +271,13 @@
 <script>
 const SUPABASE_URL = 'https://lklxavtsmqdwjnrgrzjz.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_CF1-xwEuS0OyqbkxhJERkQ_UlyBCuBz';
-const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+  auth: {
+    detectSessionInUrl: true,
+    persistSession: true,
+    autoRefreshToken: true
+  }
+});
 
 const SECTIONS = {
   doces:    {icon:'🍰', label:'Doces',           items:['Bolo de milho','Bolo de fubá','Bolo de fubá com goiabada','Bolo de mandioca (aipim)','Bolo de paçoca','Arroz doce','Canjica','Curau','Doce de abóbora','Pé-de-moleque','Paçoca','Cocada','Maçã do amor','Queijadinha','Nhá Benta']},
@@ -311,6 +317,10 @@ function switchTab(tab){
 /* ── AUTH ──────────────────────────────────────── */
 db.auth.onAuthStateChange(async(event,session)=>{
   showLoading(false);
+  // Limpa o hash da URL após o redirect OAuth (evita loop de logout)
+  if(window.location.hash && window.location.hash.includes('access_token')){
+    history.replaceState(null,'',window.location.pathname);
+  }
   if(session?.user){
     currentUser = session.user;
     const meta  = session.user.user_metadata;
@@ -341,7 +351,7 @@ async function signInWithGoogle(){
   showLoading(true);
   const {error} = await db.auth.signInWithOAuth({
     provider:'google',
-    options:{redirectTo:window.location.href}
+    options:{redirectTo: window.location.origin + window.location.pathname}
   });
   if(error){ showLoading(false); alert('Erro ao entrar: '+error.message); }
 }
