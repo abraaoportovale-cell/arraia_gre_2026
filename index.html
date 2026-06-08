@@ -72,4 +72,317 @@
   #success-msg h2{font-family:'Passion One',sans-serif;font-size:2rem;color:var(--yellow);margin-bottom:8px}
   #success-msg p{color:#ccc;font-size:.92rem;line-height:1.5}
   .btn-edit{display:inline-block;margin-top:18px;background:rgba(245,184,0,.12);border:1px solid var(--yellow);color:var(--yellow);font-family:'Passion One',sans-serif;font-size:1rem;padding:10px 28px;border-radius:30px;cursor:pointer;letter-spacing:.08em}
-  .counter-bar{position:fixed;bo
+  .counter-bar{position:fixed;bottom:0;left:0;right:0;background:var(--brown);border-top:3px solid var(--yellow);padding:10px 20px;display:flex;justify-content:center;gap:20px;align-items:center;font-size:.85rem;z-index:50}
+  .counter-bar span{color:#ffd97a}
+  .counter-bar strong{color:var(--yellow);font-size:1.1rem;font-family:'Passion One',sans-serif}
+  @media(max-width:480px){.items-grid{grid-template-columns:1fr 1fr}.date-badge{font-size:1rem;padding:6px 14px}}
+</style>
+</head>
+<body>
+
+<div class="bunting">
+  <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,20 Q180,40 360,20 Q540,0 720,20 Q900,40 1080,20 Q1260,0 1440,20" stroke="#ffe47a" stroke-width="1.5" fill="none" opacity=".7"/>
+    <g class="bulb"><ellipse cx="90" cy="26" rx="7" ry="9" fill="#fffaaa"/></g>
+    <g class="bulb"><ellipse cx="210" cy="34" rx="7" ry="9" fill="#fffaaa"/></g>
+    <g class="bulb"><ellipse cx="360" cy="22" rx="7" ry="9" fill="#fffaaa"/></g>
+    <g class="bulb"><ellipse cx="540" cy="12" rx="7" ry="9" fill="#fffaaa"/></g>
+    <g class="bulb"><ellipse cx="720" cy="22" rx="7" ry="9" fill="#fffaaa"/></g>
+    <g class="bulb"><ellipse cx="900" cy="34" rx="7" ry="9" fill="#fffaaa"/></g>
+    <g class="bulb"><ellipse cx="1080" cy="22" rx="7" ry="9" fill="#fffaaa"/></g>
+    <g class="bulb"><ellipse cx="1260" cy="12" rx="7" ry="9" fill="#fffaaa"/></g>
+    <polygon points="30,18 46,18 38,36" fill="#E53935"/>
+    <polygon points="52,14 68,14 60,32" fill="#1E88E5"/>
+    <polygon points="74,10 90,10 82,28" fill="#F5B800"/>
+    <polygon points="450,4 466,4 458,22" fill="#E91E8C"/>
+    <polygon points="620,12 636,12 628,30" fill="#F5B800"/>
+    <polygon points="800,14 816,14 808,32" fill="#E91E8C"/>
+    <polygon points="980,4 996,4 988,22" fill="#E53935"/>
+    <polygon points="1290,10 1306,10 1298,28" fill="#1E88E5"/>
+    <polygon points="1400,18 1416,18 1408,36" fill="#F5B800"/>
+  </svg>
+</div>
+
+<div class="loading-overlay" id="loading-overlay">
+  <div class="spinner"></div>
+  <span>Carregando...</span>
+</div>
+
+<div class="page">
+  <div class="hero">
+    <div class="edition">🌽 3ª Edição · Arraiá do GRE · Porto Vale 🌽</div>
+    <h1>FESTA<span>JUNINA</span></h1>
+    <div class="subtitle">Do GRE, o time de estratégia da Porto Vale ⭐</div>
+    <div class="date-badge">📅 27 DE JUNHO · 14H · RECANTO DA ATIVA</div>
+  </div>
+
+  <div class="intro-box">
+    <strong>Vote no pratinho que você vai trazer!</strong><br>
+    Faça login com seu Gmail, escolha os itens que pretende levar.
+    Você verá em tempo real quem já escolheu cada prato — assim a gente garante variedade! 🎉
+  </div>
+
+  <div id="login-screen">
+    <p>Entre com sua conta Google para participar:</p>
+    <button class="google-btn" onclick="signInWithGoogle()">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+      </svg>
+      Entrar com Google
+    </button>
+    <small>Apenas membros do GRE da Porto Vale</small>
+  </div>
+
+  <div id="user-bar">
+    <img id="user-avatar" src="" alt="Foto">
+    <div style="flex:1">
+      <span class="uname" id="user-name-bar"></span>
+      <span class="uemail" id="user-email-bar"></span>
+    </div>
+    <button class="logout-btn" onclick="signOut()">Sair</button>
+  </div>
+
+  <form id="voteForm" style="display:none" onsubmit="handleSubmit(event)">
+    <div class="section sec-doces">
+      <div class="section-header"><span>🍰</span> Doces</div>
+      <div class="items-grid" id="grid-doces"></div>
+    </div>
+    <div class="section sec-salgados">
+      <div class="section-header"><span>🌭</span> Salgados</div>
+      <div class="items-grid" id="grid-salgados"></div>
+    </div>
+    <div class="section sec-milho">
+      <div class="section-header"><span>🌽</span> Típicos de Milho</div>
+      <div class="items-grid" id="grid-milho"></div>
+    </div>
+    <div class="section sec-caldos">
+      <div class="section-header"><span>🍲</span> Caldos</div>
+      <div class="items-grid" id="grid-caldos"></div>
+    </div>
+    <div class="section sec-petiscos">
+      <div class="section-header"><span>🥜</span> Petiscos</div>
+      <div class="items-grid" id="grid-petiscos"></div>
+    </div>
+    <div class="section sec-bebidas">
+      <div class="section-header"><span>🥤</span> Bebidas</div>
+      <div class="items-grid" id="grid-bebidas"></div>
+    </div>
+    <div class="section sec-outros">
+      <div class="section-header"><span>🎁</span> Outros</div>
+      <div class="items-grid" id="grid-outros"></div>
+    </div>
+    <div class="submit-wrap">
+      <button type="submit" class="btn-submit" id="submit-btn">🎊 Confirmar meu pratinho!</button>
+    </div>
+  </form>
+
+  <div id="success-msg">
+    <span class="emoji-big">🎉</span>
+    <h2>CONFIRMADO, SIMBORA!</h2>
+    <p id="success-detail"></p>
+    <button class="btn-edit" onclick="editChoices()">✏️ Editar minha escolha</button>
+  </div>
+
+  <div style="height:80px"></div>
+</div>
+
+<div class="counter-bar">
+  <span>✅ Itens selecionados: <strong id="count">0</strong></span>
+  <span>🎪 Arraiá do GRE 2026</span>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = 'https://lklxavtsmqdwjnrgrzjz.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_CF1-xwEuS0OyqbkxhJERkQ_UlyBCuBz';
+
+// CORREÇÃO: era "supabase", conflitava com o SDK — renomeado para "db"
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const SECTIONS = {
+  doces:    ['Bolo de milho','Bolo de fubá','Bolo de fubá com goiabada','Bolo de mandioca (aipim)','Bolo de paçoca','Arroz doce','Canjica','Curau','Doce de abóbora','Pé-de-moleque','Paçoca','Cocada','Maçã do amor','Queijadinha','Nhá Benta'],
+  salgados: ['Cachorro-quente','Carne louca','Bolinho caipira','Empadão','Torta salgada','Esfiha','Pastel assado','Pão com linguiça','Mini sanduíches','Calabresa acebolada'],
+  milho:    ['Milho cozido','Pamonha','Cuscuz'],
+  caldos:   ['Caldo verde','Caldo de mandioca','Caldo de feijão','Caldo de milho','Caldo de abóbora'],
+  petiscos: ['Amendoim doce','Amendoim salgado','Pé-de-moleque','Paçoca','Pipoca doce','Pipoca salgada'],
+  bebidas:  ['Refrigerante','Coca-Cola Zero','Suco','Chá gelado','Água','Quentão sem álcool','Chocolate quente'],
+  outros:   ['Talheres descartáveis','Pratos descartáveis','Copos descartáveis','Guardanapos','Gelo']
+};
+
+let currentUser = null;
+let votesData   = {};
+let myVotes     = new Set();
+let rendered    = false;
+let realtimeCh  = null;
+
+function showLoading(v) {
+  document.getElementById('loading-overlay').classList.toggle('visible', v);
+}
+
+db.auth.onAuthStateChange(async (event, session) => {
+  showLoading(false);
+  if (session?.user) {
+    currentUser = session.user;
+    const meta = session.user.user_metadata;
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('user-bar').style.display     = 'flex';
+    document.getElementById('user-avatar').src            = meta.avatar_url || meta.picture || '';
+    document.getElementById('user-name-bar').textContent  = meta.full_name || meta.name || session.user.email;
+    document.getElementById('user-email-bar').textContent = session.user.email;
+    if (!rendered) { renderAllSections(); rendered = true; }
+    await loadAllVotes();
+    await loadMyVotes();
+    subscribeRealtime();
+    document.getElementById('voteForm').style.display = 'flex';
+  } else {
+    currentUser = null;
+    document.getElementById('login-screen').style.display = 'block';
+    document.getElementById('user-bar').style.display     = 'none';
+    document.getElementById('voteForm').style.display     = 'none';
+    document.getElementById('success-msg').classList.remove('show');
+    if (realtimeCh) { db.removeChannel(realtimeCh); realtimeCh = null; }
+  }
+});
+
+async function signInWithGoogle() {
+  showLoading(true);
+  const { error } = await db.auth.signInWithOAuth({
+    provider: 'google',
+    options: { redirectTo: window.location.href }
+  });
+  if (error) { showLoading(false); alert('Erro ao entrar: ' + error.message); }
+}
+
+async function signOut() {
+  if (confirm('Deseja sair da sua conta?')) await db.auth.signOut();
+}
+
+async function loadAllVotes() {
+  const { data, error } = await db.from('votes2026').select('uid, name, item');
+  if (error) { console.error(error); return; }
+  votesData = {};
+  data.forEach(r => {
+    if (!votesData[r.item]) votesData[r.item] = [];
+    votesData[r.item].push({ uid: r.uid, name: r.name });
+  });
+  refreshAllVoterChips();
+}
+
+async function loadMyVotes() {
+  if (!currentUser) return;
+  const { data } = await db.from('votes2026').select('item').eq('uid', currentUser.id);
+  myVotes = new Set((data || []).map(r => r.item));
+  document.querySelectorAll('input[name="items"]').forEach(cb => {
+    cb.checked = myVotes.has(cb.value);
+  });
+  updateCount();
+}
+
+function subscribeRealtime() {
+  if (realtimeCh) db.removeChannel(realtimeCh);
+  realtimeCh = db.channel('votes2026-changes')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'votes2026' }, () => {
+      loadAllVotes();
+    })
+    .subscribe();
+}
+
+async function saveVotes(items) {
+  if (!currentUser) return;
+  showLoading(true);
+  try {
+    await db.from('votes2026').delete().eq('uid', currentUser.id);
+    if (items.length > 0) {
+      const meta = currentUser.user_metadata;
+      const rows = items.map(item => ({
+        uid:       currentUser.id,
+        name:      meta.full_name || meta.name || currentUser.email,
+        email:     currentUser.email,
+        photo_url: meta.avatar_url || meta.picture || '',
+        item
+      }));
+      const { error } = await db.from('votes2026').insert(rows);
+      if (error) throw error;
+    }
+    myVotes = new Set(items);
+  } finally {
+    showLoading(false);
+  }
+}
+
+function renderAllSections() {
+  Object.entries(SECTIONS).forEach(([k, items]) => {
+    const grid = document.getElementById('grid-' + k);
+    if (!grid || grid.children.length) return;
+    items.forEach((item, i) => {
+      const id = `item-${k}-${i}`;
+      const label = document.createElement('label');
+      label.className = 'item-label';
+      label.htmlFor   = id;
+      label.innerHTML = `
+        <input type="checkbox" id="${id}" name="items" value="${item}" onchange="updateCount()">
+        <div class="item-top">
+          <div class="checkmark">
+            <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+              <path d="M1 5L4.5 8.5L11 1" stroke="#5C3317" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <span class="item-text">${item}</span>
+        </div>
+        <div class="voters-list" id="voters-${id}"></div>
+      `;
+      grid.appendChild(label);
+    });
+  });
+}
+
+function refreshAllVoterChips() {
+  document.querySelectorAll('input[name="items"]').forEach(cb => {
+    const div = document.getElementById('voters-' + cb.id);
+    if (!div) return;
+    const others = (votesData[cb.value] || []).filter(v => v.uid !== currentUser?.id);
+    div.innerHTML = others.length
+      ? others.map(v => `<span class="voter-chip">👤 ${v.name.split(' ')[0]}</span>`).join('')
+      : '';
+  });
+}
+
+function updateCount() {
+  const n = document.querySelectorAll('input[name="items"]:checked').length;
+  document.getElementById('count').textContent = n;
+}
+
+async function handleSubmit(e) {
+  e.preventDefault();
+  if (!currentUser) { alert('Faça login primeiro!'); return; }
+  const checked = [...document.querySelectorAll('input[name="items"]:checked')].map(i => i.value);
+  if (checked.length === 0) { alert('Selecione pelo menos um item!'); return; }
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  try {
+    await saveVotes(checked);
+    document.getElementById('voteForm').style.display = 'none';
+    const msg = document.getElementById('success-msg');
+    msg.classList.add('show');
+    const meta = currentUser.user_metadata;
+    const nome = (meta.full_name || meta.name || 'Você').split(' ')[0];
+    document.getElementById('success-detail').textContent =
+      `${nome}, seus ${checked.length} item(ns) foram registrados: ${checked.join(', ')}. Até o arraiá! 🌽🎵`;
+  } catch(err) {
+    alert('Erro ao salvar: ' + err.message);
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+function editChoices() {
+  document.getElementById('success-msg').classList.remove('show');
+  document.getElementById('voteForm').style.display = 'flex';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
