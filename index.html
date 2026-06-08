@@ -539,6 +539,7 @@ async function handleSubmit(e){
   btn.disabled = true;
   try{
     await saveVotes(all);
+    myVotes = new Set(checked);
     document.getElementById('voteForm').style.display='none';
     document.getElementById('success-msg').classList.add('show');
     const meta  = currentUser.user_metadata;
@@ -554,9 +555,10 @@ async function handleSubmit(e){
   }
 }
 
-function editChoices(){
+async function editChoices(){
   document.getElementById('success-msg').classList.remove('show');
   document.getElementById('voteForm').style.display='flex';
+  await loadMyVotes();
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
